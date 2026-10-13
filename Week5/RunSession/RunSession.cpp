@@ -26,13 +26,19 @@ void RunSession::StartRun()
         cout << "Round " << round_ << "\n";
 
         // 1. Generate input
-        TurnInput input = inputGenerator_->Generate();
+        Hand hand = inputGenerator_->Generate();
 
-        cout << "[PLAY] input generated: "
-             << input.value << "\n";
+        cout << "[PLAYER HAND] ";
+        for (std::size_t i = 0; i < hand.cards.size(); ++i)
+        {
+            cout << '[' << CardToString(hand.cards[i]) << ']';
+            if (i + 1 < hand.cards.size()) cout << ' ';
+        }
+        cout << "\n";
+        cout << "[HAND TYPE] ";
 
-        // 2. Compute base score
-        int baseScore = scoringRule_->Calculate(input);
+        // 2. The scoring rule runs the Chain of Responsibility on this Hand.
+        int baseScore = scoringRule_->Calculate(hand);
 
         cout << "[SCORE] base score: "
              << baseScore << "\n";
