@@ -4,11 +4,10 @@
 #include <array>
 #include <string>
 
-// Card data is shown to the player. The checker task does not require
-// deriving the hand rank from these cards, so rank remains a dummy input.
+// Card values: 2-10 are numeric, 11=J, 12=Q, 13=K, 14=A.
 struct Card
 {
-    int value = 2;          // 2-14, where 11=J, 12=Q, 13=K, 14=A
+    int value = 2;
     std::string suit = "Spades";
 };
 
@@ -32,9 +31,7 @@ enum class HandRank
 struct Hand
 {
     static constexpr std::size_t CardCount = 5;
-
     std::array<Card, CardCount> cards{};
-    HandRank rank = HandRank::HighCard;
 };
 
 inline std::string CardValueToString(int value)

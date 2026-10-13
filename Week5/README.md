@@ -101,3 +101,38 @@ Saat `FixedInputGenerator` diganti menjadi `RandomInputGenerator`, `RunSession` 
 Jika scoring logic diletakkan langsung di dalam `RunSession`, maka `RunSession` akan menangani terlalu banyak hal. Ketika rumus scoring ingin diubah, `RunSession` juga harus ikut diubah. Hal ini membuat pemisahan antara struktur dan behavior menjadi kurang jelas dan kode lebih sulit dikembangkan.
 
 Dengan memisahkan setiap tanggung jawab ke class masing-masing, kita dapat mengubah behavior game tanpa mengganggu struktur core loop.
+
+
+## G. Week 5 — Chain of Responsibility
+
+`PokerHandChecker/` contains the abstract checker interface and the 13 concrete hand checkers. Each checker examines the five cards in `Hand`; if the hand does not match, it forwards the request to the next checker. `SimpleScoringRule` connects the chain from strongest hand to weakest hand so a hand matching multiple patterns receives the highest applicable rank.
+
+The classification is based on the actual `Card.value` and `Card.suit` values, not a preassigned dummy rank. Straight detection supports the Ace-low sequence A-2-3-4-5. The special hands Five of a Kind, Flush House, and Flush Five are supported by the checker, although the standard 52-card generator does not naturally produce duplicate cards needed for those patterns.
+
+### Current scoring scope
+
+`SimpleScoringRule` uses the detected `HandRank` to return a simple placeholder score (`rank + 1`) so the existing core loop can continue to calculate rewards. This is **not** the full Balatro scoring formula yet; hand classification and scoring formula are separate responsibilities.
+
+### Compile and run the game
+
+From the `Task1` folder:
+
+```bash
+g++ -std=c++17 main.cpp InputGenerator/InputGenerator.cpp \
+    ScoringRule/ScoringRule.cpp PokerHandChecker/PokerHandChecker.cpp \
+    RewardRule/RewardRule.cpp RunSession/RunSession.cpp \
+    ShopSystem/ShopSystem.cpp -o Task1
+./Task1
+```
+
+### Test all 13 hand types
+
+The separate `checker_test.cpp` creates a known card combination for each hand type and verifies the detected `HandRank`:
+
+```bash
+g++ -std=c++17 checker_test.cpp InputGenerator/InputGenerator.cpp \
+    ScoringRule/ScoringRule.cpp PokerHandChecker/PokerHandChecker.cpp -o checker_test
+./checker_test
+```
+
+The test uses duplicate rank/suit combinations for the non-standard Balatro hand types. Those combinations are test fixtures; the normal random generator draws five distinct cards from a standard 52-card deck.

@@ -24,19 +24,19 @@ public:
 private:
     int ConvertRankToScore(HandRank rank) const;
 
-    HighCardChecker highCardChecker_;
-    PairChecker pairChecker_;
-    TwoPairChecker twoPairChecker_;
-    ThreeOfAKindChecker threeOfAKindChecker_;
-    StraightChecker straightChecker_;
-    FlushChecker flushChecker_;
-    FullHouseChecker fullHouseChecker_;
-    FourOfAKindChecker fourOfAKindChecker_;
-    StraightFlushChecker straightFlushChecker_;
-    RoyalFlushChecker royalFlushChecker_;
-    FiveOfAKindChecker fiveOfAKindChecker_;
-    FlushHouseChecker flushHouseChecker_;
     FlushFiveChecker flushFiveChecker_;
+    FlushHouseChecker flushHouseChecker_;
+    FiveOfAKindChecker fiveOfAKindChecker_;
+    RoyalFlushChecker royalFlushChecker_;
+    StraightFlushChecker straightFlushChecker_;
+    FourOfAKindChecker fourOfAKindChecker_;
+    FullHouseChecker fullHouseChecker_;
+    FlushChecker flushChecker_;
+    StraightChecker straightChecker_;
+    ThreeOfAKindChecker threeOfAKindChecker_;
+    TwoPairChecker twoPairChecker_;
+    PairChecker pairChecker_;
+    HighCardChecker highCardChecker_;
 };
 
 #endif

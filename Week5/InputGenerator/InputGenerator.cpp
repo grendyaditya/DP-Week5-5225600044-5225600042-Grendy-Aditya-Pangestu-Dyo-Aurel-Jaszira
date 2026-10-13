@@ -11,18 +11,16 @@ namespace
         "Spades", "Hearts", "Diamonds", "Clubs"
     };
 
-    Hand GenerateRandomHand(HandRank rank)
+    Hand GenerateRandomHand()
     {
-        // Build a standard 52-card deck and draw five distinct cards.
+        // Draw five distinct cards from a standard 52-card deck.
         std::vector<Card> deck;
         deck.reserve(52);
 
         for (const char* suit : Suits)
         {
             for (int value = 2; value <= 14; ++value)
-            {
                 deck.push_back(Card{value, suit});
-            }
         }
 
         static std::random_device randomDevice;
@@ -31,29 +29,24 @@ namespace
 
         Hand hand;
         for (std::size_t i = 0; i < Hand::CardCount; ++i)
-        {
             hand.cards[i] = deck[i];
-        }
 
-        // Rank is deliberately dummy: the assignment asks only to print
-        // the hand type, not to evaluate the five cards.
-        hand.rank = rank;
         return hand;
     }
 }
 
 Hand FixedInputGenerator::Generate()
 {
-    return GenerateRandomHand(HandRank::HighCard);
+    // A deterministic example hand: Pair of 2s.
+    Hand hand;
+    hand.cards = {{
+        Card{2, "Hearts"}, Card{2, "Spades"}, Card{5, "Diamonds"},
+        Card{8, "Clubs"}, Card{13, "Hearts"}
+    }};
+    return hand;
 }
 
 Hand RandomInputGenerator::Generate()
 {
-    static std::random_device randomDevice;
-    static std::mt19937 generator(randomDevice());
-    constexpr int handRankCount = 13;
-    std::uniform_int_distribution<int> distribution(0, handRankCount - 1);
-
-    const auto rank = static_cast<HandRank>(distribution(generator));
-    return GenerateRandomHand(rank);
+    return GenerateRandomHand();
 }
